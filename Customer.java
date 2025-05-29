@@ -1,4 +1,3 @@
-// Create Customer class here
 public class Customer {
     // INSTANCE FIELDS
     private String name;
