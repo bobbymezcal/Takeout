@@ -7,7 +7,7 @@ public class FoodMenu {
 
     // CONSTRUCTOR
     public FoodMenu() {
-        this.menu = new ArrayList<Food>;
+        this.menu = new ArrayList<Food>();
         menu.add(new Food("Tacos", "Yummy steak tacos", 15));
         menu.add(new Food("Dumplings", "Delicious steamed dumplings", 10));
         menu.add(new Food("Ramen", "Hot pork ramen", 12));
