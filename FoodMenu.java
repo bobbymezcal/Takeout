@@ -12,4 +12,13 @@ public class FoodMenu {
         menu.add(new Food("Dumplings", "Delicious steamed dumplings", 10));
         menu.add(new Food("Ramen", "Hot pork ramen", 12));
     }
+
+    @Override
+    public String toString() {
+        String menuString = "";
+        for (int i = 0; i < menu.size(); i++) {
+            menuString += ((i + 1) + ". " + menu.get(i).toString() + "\n");
+        }
+        return menuString;
+    }
 }
