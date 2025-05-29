@@ -10,4 +10,12 @@ public class ShoppingBag<T extends PricedItem<Integer>> {
         this.shoppingBag = new HashMap();
     }
 
+    public void addItem(T item) {
+        if (shoppingBag.get(item) == null) {
+            shoppingBag.put(item, 1);
+        } else {
+            shoppingBag.put(item, (shoppingBag.get(item) + 1));
+        }
+    }
+
 }
