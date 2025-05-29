@@ -4,6 +4,12 @@ public class Customer {
     private String name;
     private int money;
 
+    // CONSTRUCTOR
+    public Customer(String name, int money) {
+        this.name = name;
+        this.money = money;
+    }
+
     // getters
     public String getName() {
         return this.name;
