@@ -21,4 +21,11 @@ public class FoodMenu {
         }
         return menuString;
     }
+
+    public Food getFood(int index) {
+        if (index < 1 || index > menu.size()) {
+            return null;
+        }
+        return menu.get(index - 1);
+    }
 }
