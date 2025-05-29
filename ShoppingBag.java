@@ -18,4 +18,12 @@ public class ShoppingBag<T extends PricedItem<Integer>> {
         }
     }
 
+    public int getTotalPrice() {
+        int totalPrice = 0;
+        for (T key : shoppingBag.keySet()) {
+            totalPrice += shoppingBag.get(key) * key.getPrice();
+        }
+        return totalPrice;
+    }
+
 }
