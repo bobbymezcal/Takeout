@@ -15,9 +15,8 @@ public class TakeOutSimulator {
     }
 
     private <T> T getResponse(String userInputPrompt, UserInputRetriever<T> userInputRetriever) {
-        input = new Scanner(System.in);
         while (true) {
-            try {
+            try (Scanner input = new Scanner(System.in)) {
                 System.out.println(userInputPrompt);
                 int userInput = input.nextInt();
                 input.nextLine();
@@ -107,9 +106,29 @@ public class TakeOutSimulator {
     public void checkoutCustomer(ShoppingBag<Food> shoppingBag) {
         int remainingMoney = customer.getMoney();
         remainingMoney -= shoppingBag.getTotalPrice();
-        System.out.println("Processing payment . . .");
+        System.out.println("\n\nProcessing payment . . .");
         System.out.println("Your remaining money: $" + remainingMoney);
         System.out.println("Thank you and enjoy your food!");
+    }
+
+    public void takeOutPrompt() {
+        boolean readyToCheckout = false;
+        ShoppingBag<Food> shoppingBag = new ShoppingBag<>();
+        int customerMoneyLeft = customer.getMoney();
+
+        while (!readyToCheckout) {
+            System.out.println("You have " + customerMoneyLeft + " left to spend.\n");
+            System.out.println(menu.toString());
+            Food selection = getMenuSelection();
+            if (selection.getPrice() > customerMoneyLeft) {
+                shoppingBag.addItem(getMenuSelection());
+                readyToCheckout = !isStillOrderingFood();
+            } else {
+                System.out.println("Oops! Looks like you don't have enough for that");
+                readyToCheckout = !isStillOrderingFood();
+            }
+        }
+        checkoutCustomer(shoppingBag);
     }
 
 }
