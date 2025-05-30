@@ -29,4 +29,30 @@ public class TakeOutSimulator {
             }
         }
     }
+
+    public boolean shouldSimulate() {
+        String userPrompt = "Enter 1 to CONTINUE simulation or 0 to EXIT program:";
+        input = new Scanner(System.in);
+        UserInputRetriever<Boolean> retriever = (int selection) -> {
+            if (selection == 0) { 
+                return false;
+            } else if (selection == 1) {
+                if (customer.getMoney() >= menu.getLowestCostFood().getPrice()) {
+                    return true;
+                } else {
+                    throw new IllegalArgumentException("You don't have enough money to continue shopping");
+                }
+            }
+            throw new IllegalArgumentException("Invalid selection");
+        };
+        while (true) {
+            try {
+                System.out.println(userPrompt);
+                return retriever.produceOutput(input.nextInt());
+            } catch (IllegalArgumentException e) {
+                System.out.println(e);
+            }
+        }
+    }
+
 }
