@@ -32,7 +32,6 @@ public class TakeOutSimulator {
 
     public boolean shouldSimulate() {
         String userPrompt = "Enter 1 to CONTINUE simulation or 0 to EXIT program:";
-        input = new Scanner(System.in);
         UserInputRetriever<Boolean> retriever = (int selection) -> {
             if (selection == 0) { 
                 return false;
@@ -46,11 +45,38 @@ public class TakeOutSimulator {
             throw new IllegalArgumentException("Invalid selection");
         };
         while (true) {
-            try {
+            try (Scanner input = new Scanner(System.in)){
                 System.out.println(userPrompt);
                 return retriever.produceOutput(input.nextInt());
             } catch (IllegalArgumentException e) {
                 System.out.println(e);
+            }
+        }
+    }
+
+    public Food getMenuSelection() {
+        String userPrompt = "Choose a menu item by number:";
+        UserInputRetriever<Food> foodRetriever = (int selection) -> {
+            Food food = menu.getFood(selection);
+            if (food == null) {
+                throw new IllegalArgumentException("Invalid selection");   
+            }
+            return menu.getFood(selection);
+        };
+        while (true) {
+            try (Scanner input = new Scanner(System.in)) {
+                System.out.print(menu.toString() + "\n");
+                System.out.println(userPrompt);
+                if (input.hasNextInt()) {
+                    Food result = foodRetriever.produceOutput(input.nextInt());
+                    input.nextLine();
+                    return result;
+                } else {
+                    System.out.println("Please enter an integer!");
+                    input.nextLine();
+                }
+            } catch (IllegalArgumentException e) {
+                System.out.println("Error: " + e.getMessage());
             }
         }
     }
