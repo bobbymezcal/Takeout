@@ -81,4 +81,30 @@ public class TakeOutSimulator {
         }
     }
 
+    public boolean isStillOrderingFood() {
+        String userPrompt = "Enter 1 to CONTINUE shopping or 0 to CHECKOUT: ";
+        UserInputRetriever<Boolean> stillOrdering = (int selection) -> {
+            if (selection == 0) {
+                return false;
+            } else if (selection == 1) {
+                return true;
+            } else {
+                throw new IllegalArgumentException("Please enter 1 or 0");
+            }
+        };
+        while (true) {
+            try (Scanner input = new Scanner(System.in)) {
+                System.out.println(userPrompt);
+                if (input.hasNextInt()) {
+                    return stillOrdering.produceOutput(input.nextInt());
+                } else {
+                    System.out.println("Invalid input!");
+                    input.nextLine();
+                }
+            } catch (IllegalArgumentException e) {
+                System.out.println("Error: " + e.getMessage());
+            }
+        }
+    }
+
 }
