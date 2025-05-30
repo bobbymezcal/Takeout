@@ -15,16 +15,18 @@ public class TakeOutSimulator {
     }
 
     private <T> T getResponse(String userInputPrompt, UserInputRetriever<T> userInputRetriever) {
+        input = new Scanner(System.in);
+        System.out.print(userInputPrompt);
         while (true) {
-            try (Scanner input = new Scanner(System.in)) {
-                System.out.println(userInputPrompt);
+            try {
                 int userInput = input.nextInt();
-                input.nextLine();
                 return userInputRetriever.produceOutput(userInput);
             } catch (IllegalArgumentException e) {
                 System.out.println("That was not a valid input. Try again!");
+                input.nextLine();
             } catch (InputMismatchException e) {
-                System.out.println("Input needs to be an 'int' type.");
+                System.out.println("Input is incorrect type.");
+                input.nextLine();
             }
         }
     }
@@ -43,14 +45,7 @@ public class TakeOutSimulator {
             }
             throw new IllegalArgumentException("Invalid selection");
         };
-        while (true) {
-            try (Scanner input = new Scanner(System.in)){
-                System.out.println(userPrompt);
-                if(input.hasNextInt()) return retriever.produceOutput(input.nextInt());
-            } catch (IllegalArgumentException e) {
-                System.out.println(e);
-            }
-        }
+        return getResponse(userPrompt, retriever);
     }
 
     public Food getMenuSelection() {
@@ -62,22 +57,7 @@ public class TakeOutSimulator {
             }
             return menu.getFood(selection);
         };
-        while (true) {
-            try (Scanner input = new Scanner(System.in)) {
-                System.out.print(menu.toString() + "\n");
-                System.out.print(userPrompt);
-                if (input.hasNextInt()) {
-                    Food result = foodRetriever.produceOutput(input.nextInt());
-                    input.nextLine();
-                    return result;
-                } else {
-                    System.out.println("Please enter an integer!");
-                    input.nextLine();
-                }
-            } catch (IllegalArgumentException e) {
-                System.out.println("Error: " + e.getMessage());
-            }
-        }
+        return getResponse(userPrompt, foodRetriever);
     }
 
     public boolean isStillOrderingFood() {
@@ -87,20 +67,7 @@ public class TakeOutSimulator {
             if (selection == 1) return true;
             throw new IllegalArgumentException("Please enter 1 or 0");
         };
-        while (true) {
-            try (Scanner input = new Scanner(System.in)) {
-                System.out.println(userPrompt);
-
-                if (input.hasNextInt()) {
-                    return stillOrdering.produceOutput(input.nextInt());
-                } else {
-                    System.out.println("Invalid input! Please enter a number.");
-                    input.nextLine();
-                }
-            } catch (IllegalArgumentException e) {
-                System.out.println("Error: " + e.getMessage());
-            }
-        }
+        return getResponse(userPrompt, stillOrdering);
     }
 
     public void checkoutCustomer(ShoppingBag<Food> shoppingBag) {
@@ -118,6 +85,7 @@ public class TakeOutSimulator {
 
         while (!readyToCheckout) {
             System.out.println("You have $" + customerMoneyLeft + " left to spend.\n");
+            System.out.println(menu.toString());
             Food selection = getMenuSelection();
             if (selection.getPrice() < customerMoneyLeft) {
                 shoppingBag.addItem(selection);
