@@ -38,4 +38,12 @@ public class FoodMenu {
         }
         return cheapestFood;
     }
+
+    public int getLength() {
+        return menu.size();
+    }
+
+    public void addFoodItem(Food item) {
+        menu.add(item);
+    }
 }

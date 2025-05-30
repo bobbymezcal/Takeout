@@ -9,7 +9,7 @@ public class ShoppingBag<T extends PricedItem<Integer>> {
     public ShoppingBag() {
         this.shoppingBag = new HashMap();
     }
-
+    
     public void addItem(T item) {
         if (shoppingBag.get(item) == null) {
             shoppingBag.put(item, 1);

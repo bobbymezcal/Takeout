@@ -46,7 +46,7 @@ public class TakeOutSimulator {
         while (true) {
             try (Scanner input = new Scanner(System.in)){
                 System.out.println(userPrompt);
-                return retriever.produceOutput(input.nextInt());
+                if(input.hasNextInt()) return retriever.produceOutput(input.nextInt());
             } catch (IllegalArgumentException e) {
                 System.out.println(e);
             }
@@ -54,7 +54,7 @@ public class TakeOutSimulator {
     }
 
     public Food getMenuSelection() {
-        String userPrompt = "Choose a menu item by number:";
+        String userPrompt = "Choose a menu item by number: ";
         UserInputRetriever<Food> foodRetriever = (int selection) -> {
             Food food = menu.getFood(selection);
             if (food == null) {
@@ -65,7 +65,7 @@ public class TakeOutSimulator {
         while (true) {
             try (Scanner input = new Scanner(System.in)) {
                 System.out.print(menu.toString() + "\n");
-                System.out.println(userPrompt);
+                System.out.print(userPrompt);
                 if (input.hasNextInt()) {
                     Food result = foodRetriever.produceOutput(input.nextInt());
                     input.nextLine();
@@ -117,11 +117,10 @@ public class TakeOutSimulator {
         int customerMoneyLeft = customer.getMoney();
 
         while (!readyToCheckout) {
-            System.out.println("You have " + customerMoneyLeft + " left to spend.\n");
-            System.out.println(menu.toString());
+            System.out.println("You have $" + customerMoneyLeft + " left to spend.\n");
             Food selection = getMenuSelection();
-            if (selection.getPrice() > customerMoneyLeft) {
-                shoppingBag.addItem(getMenuSelection());
+            if (selection.getPrice() < customerMoneyLeft) {
+                shoppingBag.addItem(selection);
                 readyToCheckout = !isStillOrderingFood();
             } else {
                 System.out.println("Oops! Looks like you don't have enough for that");
