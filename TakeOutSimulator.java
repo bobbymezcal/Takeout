@@ -131,4 +131,13 @@ public class TakeOutSimulator {
         checkoutCustomer(shoppingBag);
     }
 
+    public void startTakeOutSimulator() {
+        boolean quit = false;
+        while(!quit) {
+            System.out.println("Hello, welcome to my restaurant!\n\n");
+            takeOutPrompt();
+            quit = !shouldSimulate();
+        }
+    }
+
 }
